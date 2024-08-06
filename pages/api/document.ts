@@ -16,6 +16,14 @@ export const config = {
 
 const uploadDir = '/tmp/universal-document-parser-service/uploads';
 
+function corsSupportedJSONResponse<Data>(res: NextApiResponse, status: number, data: Data) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Content-Type', 'application/json');
+    res.status(status).json(data);
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
@@ -88,10 +96,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         // remove all the files in uploads directory
         await fs.promises.rmdir(uploadDir, { recursive: true });
 
-        return res.status(200).json(documents);
+        return corsSupportedJSONResponse(res, 200, documents);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return corsSupportedJSONResponse(res, 500, { error: 'Internal Server Error' });
     }
 };
 
