@@ -21,7 +21,7 @@ function corsSupportedJSONResponse<Data>(res: NextApiResponse, status: number, d
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Content-Type', 'application/json');
-    res.status(status).json(data);
+    return res.status(status).json(data);
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
